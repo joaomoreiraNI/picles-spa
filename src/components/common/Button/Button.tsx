@@ -12,23 +12,24 @@ export function Button({
   ...rest
 }: IButton) {
   let buttonClass = styles.buttonBase;
+  console.log(variant);
   switch (variant) {
     case ButtonVariant.Default:
-      buttonClass += `${styles.buttonDefault}`;
+      buttonClass += ` ${styles.buttonDefault}`;
       break;
     case ButtonVariant.Disabled:
-      buttonClass += `${styles.buttonDisabled}`;
+      buttonClass += ` ${styles.buttonDisabled}`;
       break;
     case ButtonVariant.Outlined:
-      buttonClass += `${styles.buttonOutlined}`;
+      buttonClass += ` ${styles.buttonOutlined}`;
       break;
     case ButtonVariant.Text:
-      buttonClass += `${styles.buttonText}`;
+      buttonClass += ` ${styles.buttonText}`;
       break;
   }
 
   return (
-    <button className={styles.buttonBase} {...rest}>
+    <button className={buttonClass} {...rest}>
       {children}
     </button>
   );
