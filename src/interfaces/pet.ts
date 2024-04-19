@@ -8,12 +8,12 @@ export interface IPet {
   photo: string;
 }
 
-export type GetPetsRequest = Pick<IPet, "type" | "size" | "gender"> & {
+export type GetPetsRequest = Partial<Pick<IPet, "type" | "size" | "gender">> & {
   page?: number;
 };
 
 export type GetPetsResponse = {
-  item: IPet[];
+  items: IPet[];
   totalPages: number;
   currentPage: number;
 };

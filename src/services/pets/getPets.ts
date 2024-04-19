@@ -1,5 +1,5 @@
 import { GetPetsRequest, GetPetsResponse } from "../../interfaces/pet";
-import httpsClient from "../api/httpsClient";
+import httpsClient from "../api/httpClient";
 
 export async function getPets(
   params?: GetPetsRequest
