@@ -59,7 +59,7 @@ export function Shelter() {
         <div>
           <Input
             label="Telefone"
-            {...registerWhithMask("phone", ["99 9999-9999"])}
+            {...registerWhithMask("phone", ["(99) 9999-9999"])}
           />
           {formState.errors?.phone && (
             <p className={styles.formError}>{formState.errors.phone.message}</p>
@@ -68,7 +68,7 @@ export function Shelter() {
         <div>
           <Input
             label="WhatsApp"
-            {...registerWhithMask("whatsApp", ["99 99999-9999"])}
+            {...registerWhithMask("whatsApp", ["(99) 99999-9999"])}
           />
           {formState.errors?.whatsApp && (
             <p className={styles.formError}>
