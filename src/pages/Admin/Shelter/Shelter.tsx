@@ -11,21 +11,21 @@ const shelterSchema = z.object({
   name: z
     .string()
     .min(2, "Nome deve ter no mínimo 2 caracteres.")
-    .max(30, "Nome deve ter no máximo 30 caracteres"),
-  email: z.string().email("Campo deve ser um e-mail"),
+    .max(30, "Nome deve ter no máximo 30 caracteres."),
+  email: z.string().email("Campo deve ser um e-mail."),
   phone: z.string().refine(
     (value) => {
       const digits = value.replace(/\D/g, "").length;
       return digits >= 10 && digits <= 13;
     },
-    { message: "Número deve ter entre 10 e 13 caracteres" }
+    { message: "Número deve ter 10 caracteres." }
   ),
   whatsApp: z.string().refine(
     (value) => {
       const digits = value.replace(/\D/g, "").length;
       return digits >= 10 && digits <= 13;
     },
-    { message: "Número deve ter entre 10 e 13 caracteres" }
+    { message: "Número deve ter entre 10 e 11 caracteres." }
   ),
 });
 
