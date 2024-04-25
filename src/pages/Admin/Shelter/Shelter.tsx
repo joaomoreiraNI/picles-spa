@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormMask } from "use-mask-input";
+import { updateShelter } from "../../../services/shelter/updateShelter";
+import { toast } from "sonner";
 
 const shelterSchema = z.object({
   name: z
@@ -38,8 +40,27 @@ export function Shelter() {
 
   const registerWhithMask = useHookFormMask(register);
 
-  function submit({ name, email, phone, whatsApp }: ShelterSchema) {
-    console.log(name, email, phone, whatsApp);
+  async function submit({ name, email, phone, whatsApp }: ShelterSchema) {
+    const toastID = toast.loading("Salvando dados");
+    try {
+      await updateShelter({
+        name,
+        email,
+        phone: phone.replace(/\D/g, ""),
+        whatsApp: whatsApp.replace(/\D/g, ""),
+      });
+      toast.success("Dados salvos com sucesso.", {
+        id: toastID,
+        closeButton: true,
+      });
+    } catch (error) {
+      toast.error("Não foi possível salvar os dados."),
+        {
+          id: toastID,
+          closeButton: true,
+        };
+    }
+    // console.log(name, email, phone, whatsApp);
   }
   return (
     <Panel>
