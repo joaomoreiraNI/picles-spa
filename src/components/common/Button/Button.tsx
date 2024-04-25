@@ -12,7 +12,6 @@ export function Button({
   ...rest
 }: IButton) {
   let buttonClass = styles.buttonBase;
-  console.log(variant);
   switch (variant) {
     case ButtonVariant.Default:
       buttonClass += ` ${styles.buttonDefault}`;
