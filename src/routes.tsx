@@ -2,9 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Pets } from "./pages/Pets";
 import { PetDetails } from "./pages/PetDetails";
-import { Shelter } from "./pages/Admin/Shelter/";
-import { PetList } from "./pages/Admin/PetList/";
-import { AuthHOC } from "./components/common/AuthHOC";
+import { Shelter } from "./pages/Admin/Shelter";
+import { PetList } from "./pages/Admin/PetList";
+import { AuthHOC } from "./components/common/AuthHOC/AuthHOC";
+import { PetForm } from "./pages/Admin/PetForm/PetForm";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,14 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <PetList />,
+          },
+          {
+            path: "/admin/pets/new",
+            element: <PetForm />,
+          },
+          {
+            path: "/admin/pets/:id",
+            element: <PetForm />,
           },
         ],
       },
