@@ -1,7 +1,7 @@
 export interface IShelter {
-  shelterName: string;
-  shelterEmail: string;
-  shelterPhone: string;
+  name: string;
+  email: string;
+  phone: string;
   whatsApp: string;
 }
 export interface IUpdateShelterRequest {

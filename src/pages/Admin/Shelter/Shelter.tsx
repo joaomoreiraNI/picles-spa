@@ -4,11 +4,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useHookFormMask } from "use-mask-input";
 import { z } from "zod";
-import { Button } from "../../../components/common/Button";
+import { Button, ButtonVariant } from "../../../components/common/Button";
 import { Input } from "../../../components/common/Input";
 import { Panel } from "../../../components/layout/Panel";
 import { updateShelter } from "../../../services/shelter/updateShelter";
 import styles from "./Shelter.module.css";
+import { useShelter } from "../../../hooks/useShelter";
+import { useEffect } from "react";
+import { Skeleton } from "../../../components/common/Skeleton";
 
 const shelterSchema = z.object({
   name: z
@@ -35,13 +38,24 @@ const shelterSchema = z.object({
 type ShelterSchema = z.infer<typeof shelterSchema>;
 
 export function Shelter() {
-  const { handleSubmit, register, formState } = useForm<ShelterSchema>({
+  const { handleSubmit, register, formState, reset } = useForm<ShelterSchema>({
     resolver: zodResolver(shelterSchema),
   });
 
   const registerWhithMask = useHookFormMask(register);
-
   const queryClient = useQueryClient();
+  const { data, isLoading } = useShelter();
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      reset({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        whatsApp: data.whatsApp,
+      });
+    }
+  }, [data, isLoading, reset]);
 
   async function submit({ name, email, phone, whatsApp }: ShelterSchema) {
     const toastID = toast.loading("Salvando dados");
@@ -68,42 +82,63 @@ export function Shelter() {
   }
   return (
     <Panel>
-      <form className={styles.container} onSubmit={handleSubmit(submit)}>
-        <div>
-          <Input label="Nome" {...register("name")} />
-          {formState.errors?.name && (
-            <p className={styles.formError}>{formState.errors.name.message}</p>
-          )}
-        </div>
-        <div>
-          <Input label="Email" {...register("email")} />
-          {formState.errors?.email && (
-            <p className={styles.formError}>{formState.errors.email.message}</p>
-          )}
-        </div>
-        <div>
-          <Input
-            label="Telefone"
-            {...registerWhithMask("phone", ["(99) 9999-9999"])}
-          />
-          {formState.errors?.phone && (
-            <p className={styles.formError}>{formState.errors.phone.message}</p>
-          )}
-        </div>
-        <div>
-          <Input
-            label="WhatsApp"
-            {...registerWhithMask("whatsApp", ["(99) 99999-9999"])}
-          />
-          {formState.errors?.whatsApp && (
-            <p className={styles.formError}>
-              {formState.errors.whatsApp.message}
-            </p>
-          )}
-        </div>
+      {isLoading && <Skeleton count={4} width={320} height={32} />}
+      {!isLoading && (
+        <form className={styles.container} onSubmit={handleSubmit(submit)}>
+          <div>
+            <Input label="Nome" {...register("name")} />
+            {formState.errors?.name && (
+              <p className={styles.formError}>
+                {formState.errors.name.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <Input label="Email" {...register("email")} />
+            {formState.errors?.email && (
+              <p className={styles.formError}>
+                {formState.errors.email.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <Input
+              label="Telefone"
+              {...registerWhithMask("phone", ["99 9999-9999", "99 99999-9999"])}
+            />
+            {formState.errors?.phone && (
+              <p className={styles.formError}>
+                {formState.errors.phone.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <Input
+              label="WhatsApp"
+              {...registerWhithMask("whatsApp", [
+                "99 9999-9999",
+                "99 99999-9999",
+              ])}
+            />
+            {formState.errors?.whatsApp && (
+              <p className={styles.formError}>
+                {formState.errors.whatsApp.message}
+              </p>
+            )}
+          </div>
 
-        <Button type="submit">Salvar dados</Button>
-      </form>
+          <Button
+            type="submit"
+            variant={
+              !formState.isDirty || formState.isSubmitting
+                ? ButtonVariant.Disabled
+                : ButtonVariant.Default
+            }
+          >
+            Salvar dados
+          </Button>
+        </form>
+      )}
     </Panel>
   );
 }
